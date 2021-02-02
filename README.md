@@ -1,11 +1,11 @@
 # UMG #
 
-A network propagation method to detect 'upward mobility' nodes, i.e. ones whose rank improves significantly, during propagation. The method is developed to prioritize long tail genes in cancer and can be used for other applications with a similar goal.
+A network propagation method to detect 'upward mobility' nodes, i.e. ones whose rank improves significantly during propagation. The method is developed to prioritize long tail genes in cancer and can be used for other applications with a similar goal.
 
 
 ### Requirements ###
 
-Python 3.6
+Python 3.6 \
 Numpy 1.16
 
 ### Code ###
@@ -16,7 +16,7 @@ To clone the code, please run: git clone https://github.com/gersteinlab/UMG
 
 ### Example ###
 
-To run a toy example , please run: sh example/example.sh.
+For a toy example, please run: sh example/example.sh.
 
 ### Input ###
 
@@ -32,10 +32,10 @@ The second step, i.e. UMG detection using find_UMGs.py, outputs the list of dete
 
 ### Notes ###
 
-All files are tab-delimited and end with /txt.
+All files are tab-delimited and end with .txt.
 
 A matrix index file must have the same matrix filename appended with 'index' (e.g. matrix.txt and matrix_index.txt).
 
 ### License ###
 
-UMG is under the MIT License, copyrighted by the Gerstein Lab. Please see License.md for more details.
+UMG is under the MIT License, copyrighted by the Gerstein Lab. For more details, please see LICENSE.md.
