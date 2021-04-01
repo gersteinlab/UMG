@@ -3,6 +3,7 @@ import datetime
 
 import helper_functions as hp
 import numpy as np
+from scipy.stats import rankdata
 
 parser = argparse.ArgumentParser(description="Argument Parser")
 parser.add_argument("--scr", required=True, help="Score list prefix")
@@ -23,31 +24,22 @@ if args.b:
 
 print('Rank threshold (T): {0}\nMobility beta (b): {1}\n'.format(rank_threshold, mobility_beta))
 
-
-def calculate_mobility(score_list): # M: initial matrix, M_postprop: post-propagation matrix, M_index is index of nodes
-    initial_scores_order = np.flip(np.argsort(score_list['initial_score'])) # decreasing order of node indices with respect to mean score across samples before propagation
-    postprop_scores_order = np.flip(np.argsort(score_list['final_score'])) # post-propagation order
-
-    initial_ranks = np.zeros(initial_scores_order.shape)
-    postprop_ranks = np.zeros(postprop_scores_order.shape)
+def calculate_mobility(score_list):
+    initial_ranks = rankdata(-score_list['initial_score'], method='min')
+    postprop_ranks = rankdata(-score_list['final_score'], method='min')
     
-    for i in range(len(initial_scores_order)): # assign each node its initial and post-propagation rank
-        initial_ranks[initial_scores_order[i]] = i
-        postprop_ranks[postprop_scores_order[i]] = i
-        
-    mobility_status = initial_ranks - postprop_ranks # mobility status of each node
+    mobility_score = initial_ranks - postprop_ranks # mobility as the difference in pre- and post-propagation ranks
     
-    mobility_list = np.array(list(zip(score_list['node'], mobility_status, (initial_ranks + 1), (postprop_ranks + 1))), 
-                             dtype=[('node', 'U25'), ('mobility_status', 'i4'), ('initial_rank', 'i4'), ('postprop_rank', 'i4')])
-    mobility_list = np.flip(np.sort(mobility_list, order=['mobility_status']))
- 
+    mobility_list = np.array(list(zip(score_list['node'], mobility_score, (initial_ranks + 1), (postprop_ranks + 1))), dtype=[('node', 'U25'), ('mobility_score', 'i4'), ('initial_rank', 'i4'), ('postprop_rank', 'i4')])
+    mobility_list = np.flip(np.sort(mobility_list, order=['mobility_score']))
+    
     return mobility_list
 
 def run(mobility_list, T, b): # find UMGs
     assert T > 0 and T < mobility_list.shape[0], "Ranking threshold value must be positive and less than the total number of nodes."
     
     print('Selecting UMGs...')
-    UMG_inds = np.logical_and(mobility_list['mobility_status'] >= (b * mobility_list.shape[0]), mobility_list['postprop_rank'] <= T) # select UMGs per T and b values
+    UMG_inds = np.logical_and(mobility_list['mobility_score'] >= (b * mobility_list.shape[0]), mobility_list['postprop_rank'] <= T) # select UMGs per T and b values
     UMGs = mobility_list[UMG_inds]['node']
     
     return UMGs
