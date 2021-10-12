@@ -39,3 +39,13 @@ A matrix index file must have the same matrix filename appended with 'index' (e.
 ### License ###
 
 UMG is under the MIT License, copyrighted by the Gerstein Lab. For more details, please see LICENSE.md.
+
+### Citation ###
+
+Please cite as:
+
+H. Mohsen, V. Gunasekharan, T. Qing, M. Seay, Y. Surovtseva, S. Negahban, Z. Szallasi, L. Pusztai, and M. Gerstein (2021). Network propagation-based prioritization of long tail genes in 17 cancer types, Genome Biology, 22, 287.
+
+### Contact ###
+
+To contact us, please reach out to hussein.mohsen@yale.edu
